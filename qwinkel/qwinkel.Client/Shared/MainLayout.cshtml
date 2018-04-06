@@ -1,0 +1,17 @@
+@implements ILayoutComponent
+
+<div class='container-fluid'>
+    <TopNav />
+    <div class='row'>
+        <div class='col-sm-3'>
+            <SideNav />
+        </div>
+        <div class='col-sm-9'>
+            @Body
+        </div>
+    </div>
+</div>
+
+@functions {
+public RenderFragment Body { get; set; }
+}

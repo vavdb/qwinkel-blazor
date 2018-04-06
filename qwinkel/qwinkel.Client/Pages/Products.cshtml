@@ -1,0 +1,41 @@
+﻿@using qwinkel.Shared
+@page "/products"
+@inject HttpClient Http
+
+<h1>Producten</h1>
+<p>Onze producten</p>
+
+<div class="container">
+    <div class="row">
+        @if (productenContainer == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var product in productenContainer.content)
+            {
+                <div class="col-4" style="max-height: 400px;">
+                    <div class="card" style="width: 18rem; max-height: 390px">
+                        @if (!string.IsNullOrWhiteSpace(product.afbeelding?.filePath)) { 
+                            <img class="card-img-top" src="@product.afbeelding?.filePath" alt="Card image cap" style="max-width: 100%; max-height: 250px; object-fit: cover;">
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@product.naam</h5>
+                            <p class="card-text">@product.omschrijving</p>
+                            <center><a href="/product/@product.id" class="btn btn-primary">Details</a></center>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+@functions {
+qwinkel.Shared.Producten.RootObject productenContainer;
+
+protected override async Task OnInitAsync()
+{
+    productenContainer = await Http.GetJsonAsync<qwinkel.Shared.Producten.RootObject>("/api/producten");
+}
+}
